@@ -29,10 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmServerConfig));
-            this.txtServerIp = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblServerIp = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -42,14 +40,6 @@
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtServerIp
-            // 
-            this.txtServerIp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtServerIp.Location = new System.Drawing.Point(26, 311);
-            this.txtServerIp.Name = "txtServerIp";
-            this.txtServerIp.Size = new System.Drawing.Size(222, 22);
-            this.txtServerIp.TabIndex = 1;
-            // 
             // btnConnect
             // 
             this.btnConnect.BackColor = System.Drawing.Color.Transparent;
@@ -57,9 +47,9 @@
             this.btnConnect.FlatAppearance.BorderSize = 0;
             this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect.Location = new System.Drawing.Point(154, 358);
+            this.btnConnect.Location = new System.Drawing.Point(26, 292);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(94, 34);
+            this.btnConnect.Size = new System.Drawing.Size(222, 34);
             this.btnConnect.TabIndex = 2;
             this.btnConnect.Text = "Conectar";
             this.btnConnect.UseVisualStyleBackColor = false;
@@ -76,18 +66,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
-            // 
-            // lblServerIp
-            // 
-            this.lblServerIp.AutoSize = true;
-            this.lblServerIp.BackColor = System.Drawing.Color.Transparent;
-            this.lblServerIp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblServerIp.ForeColor = System.Drawing.Color.White;
-            this.lblServerIp.Location = new System.Drawing.Point(22, 288);
-            this.lblServerIp.Name = "lblServerIp";
-            this.lblServerIp.Size = new System.Drawing.Size(108, 20);
-            this.lblServerIp.TabIndex = 4;
-            this.lblServerIp.Text = "IP do Servidor";
             // 
             // lblUserName
             // 
@@ -162,14 +140,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::APS.ClientWindows.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(271, 415);
+            this.ClientSize = new System.Drawing.Size(271, 345);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.txtUserName);
-            this.Controls.Add(this.lblServerIp);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.txtServerIp);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -185,10 +161,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox txtServerIp;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lblServerIp;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.TextBox txtUserName;
         private System.Windows.Forms.Panel panel1;
