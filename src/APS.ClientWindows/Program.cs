@@ -17,7 +17,7 @@ namespace APS.ClientWindows
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmServerConfig());
+            Application.Run(new frmLogin());
         }
     }
 }

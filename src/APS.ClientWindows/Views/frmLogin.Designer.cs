@@ -1,6 +1,6 @@
 ﻿namespace APS.ClientWindows.Views
 {
-    partial class frmServerConfig
+    partial class frmLogin
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmServerConfig));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLogin));
             this.btnConnect = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblUserName = new System.Windows.Forms.Label();
@@ -36,6 +36,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.lblHostname = new System.Windows.Forms.Label();
+            this.txtHostname = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +49,7 @@
             this.btnConnect.FlatAppearance.BorderSize = 0;
             this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect.Location = new System.Drawing.Point(26, 292);
+            this.btnConnect.Location = new System.Drawing.Point(18, 353);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(222, 34);
             this.btnConnect.TabIndex = 2;
@@ -73,7 +75,7 @@
             this.lblUserName.BackColor = System.Drawing.Color.Transparent;
             this.lblUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserName.ForeColor = System.Drawing.Color.White;
-            this.lblUserName.Location = new System.Drawing.Point(22, 229);
+            this.lblUserName.Location = new System.Drawing.Point(14, 290);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(132, 20);
             this.lblUserName.TabIndex = 6;
@@ -82,7 +84,7 @@
             // txtUserName
             // 
             this.txtUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUserName.Location = new System.Drawing.Point(26, 252);
+            this.txtUserName.Location = new System.Drawing.Point(18, 313);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(222, 22);
             this.txtUserName.TabIndex = 5;
@@ -134,14 +136,36 @@
             this.btnClose.MouseEnter += new System.EventHandler(this.btnClose_MouseEnter);
             this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
             // 
-            // frmServerConfig
+            // lblHostname
+            // 
+            this.lblHostname.AutoSize = true;
+            this.lblHostname.BackColor = System.Drawing.Color.Transparent;
+            this.lblHostname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHostname.ForeColor = System.Drawing.Color.White;
+            this.lblHostname.Location = new System.Drawing.Point(14, 228);
+            this.lblHostname.Name = "lblHostname";
+            this.lblHostname.Size = new System.Drawing.Size(164, 20);
+            this.lblHostname.TabIndex = 9;
+            this.lblHostname.Text = "Hostname do servidor";
+            // 
+            // txtHostname
+            // 
+            this.txtHostname.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHostname.Location = new System.Drawing.Point(18, 251);
+            this.txtHostname.Name = "txtHostname";
+            this.txtHostname.Size = new System.Drawing.Size(222, 22);
+            this.txtHostname.TabIndex = 8;
+            // 
+            // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::APS.ClientWindows.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(271, 345);
+            this.ClientSize = new System.Drawing.Size(271, 399);
             this.ControlBox = false;
+            this.Controls.Add(this.lblHostname);
+            this.Controls.Add(this.txtHostname);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.txtUserName);
@@ -149,7 +173,7 @@
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "frmServerConfig";
+            this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmServerConfig";
             this.Load += new System.EventHandler(this.frmServerConfig_Load);
@@ -168,5 +192,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnMinimize;
+        private System.Windows.Forms.Label lblHostname;
+        private System.Windows.Forms.TextBox txtHostname;
     }
 }
