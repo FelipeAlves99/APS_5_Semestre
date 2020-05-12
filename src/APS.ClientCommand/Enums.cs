@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace APS.ClientCommand
+﻿namespace APS.ClientCommand
 {
-    class Enums
+    public enum CommandType
     {
+        UserExit,
+        UserExitWithTimer,
+        PCLock,
+        PCLockWithTimer,
+        PCRestart,
+        PCRestartWithTimer,
+        PCLogOFF,
+        PCLogOFFWithTimer,
+        PCShutDown,
+        PCShutDownWithTimer,
+        Message,
+        ClientLoginInform,
+        ClientLogOffInform,
+        IsNameExists,
+        SendClientList,
+        FreeCommand
     }
 }
