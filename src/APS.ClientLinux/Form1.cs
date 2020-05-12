@@ -8,20 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace APS.ClientWindows
+namespace APS.Client
 {
-    public partial class frmPrivateChat : Form
+    public partial class Form1 : Form
     {
-        ClientManager _client;
-
-        public frmPrivateChat(ClientManager client)
+        public Form1()
         {
             InitializeComponent();
-            _client = client;
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
-        {            
-        }
     }
 }

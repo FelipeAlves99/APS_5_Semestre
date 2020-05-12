@@ -4,24 +4,30 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace APS.ClientWindows
+namespace APS.ClientWindows.Views
 {
-    public partial class frmPrivateChat : Form
+    public partial class frmGroupChat : Form
     {
-        ClientManager _client;
+        private List<frmPrivateChat> privateChatList;
 
-        public frmPrivateChat(ClientManager client)
+        public frmGroupChat()
         {
             InitializeComponent();
-            _client = client;
+            this.privateChatList = new List<frmPrivateChat>();
         }
 
         private void btnSend_Click(object sender, EventArgs e)
-        {            
+        {
+
         }
+
     }
 }
+        

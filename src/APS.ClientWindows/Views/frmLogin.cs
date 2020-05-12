@@ -16,13 +16,11 @@ namespace APS.ClientWindows.Views
 {
     public partial class frmLogin : Form
     {
-        private const int port = 11000;
-        private static ManualResetEvent connectDone =
-        new ManualResetEvent(false);
+        private ClientManager _client;
 
         public frmLogin()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void frmServerConfig_Load(object sender, EventArgs e)
@@ -68,21 +66,14 @@ namespace APS.ClientWindows.Views
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            //ConnectToServer();
+            _client = new ClientManager(txtUserName.Text, txtHostname.Text);
+
             try
             {
-                IPHostEntry ipHostInfo = Dns.GetHostEntry(txtHostname.Text);
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
-
-                // Create a TCP/IP socket.  
-                Socket client = new Socket(ipAddress.AddressFamily,
-                    SocketType.Stream, ProtocolType.Tcp);
-
-                // Connect to the remote endpoint.  
-                client.BeginConnect(remoteEP,
-                    new AsyncCallback(ConnectCallback), client);
-                connectDone.WaitOne();
+                _client.ConnectToServer();
+                frmGroupChat groupChat = new frmGroupChat();
+                groupChat.Show();
+                this.Hide();
             }
             catch (Exception ex)
             {
@@ -90,42 +81,7 @@ namespace APS.ClientWindows.Views
             }
         }
 
-        private static void ConnectCallback(IAsyncResult ar)
-        {
-            try
-            {
-                // Retrieve the socket from the state object.  
-                Socket client = (Socket)ar.AsyncState;
-
-                // Complete the connection.  
-                client.EndConnect(ar);
-
-                Console.WriteLine("Socket connected to {0}",
-                    client.RemoteEndPoint.ToString());
-
-                // Signal that the connection has been made.  
-                connectDone.Set();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
         #endregion
 
-    }
-
-    // State object for receiving data from remote device.  
-    public class StateObject
-    {
-        // Client socket.  
-        public Socket workSocket = null;
-        // Size of receive buffer.  
-        public const int BufferSize = 256;
-        // Receive buffer.  
-        public byte[] buffer = new byte[BufferSize];
-        // Received data string.  
-        public StringBuilder sb = new StringBuilder();
     }
 }

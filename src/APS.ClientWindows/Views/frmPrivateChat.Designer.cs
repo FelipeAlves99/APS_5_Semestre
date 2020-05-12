@@ -29,13 +29,12 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblPrivateChatName = new System.Windows.Forms.Label();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.rtbMessages = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
-            this.lblPrivateChatName = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +49,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(280, 35);
             this.panel1.TabIndex = 8;
+            // 
+            // lblPrivateChatName
+            // 
+            this.lblPrivateChatName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrivateChatName.Location = new System.Drawing.Point(12, 6);
+            this.lblPrivateChatName.Name = "lblPrivateChatName";
+            this.lblPrivateChatName.Size = new System.Drawing.Size(200, 23);
+            this.lblPrivateChatName.TabIndex = 2;
+            this.lblPrivateChatName.Text = "Nome do user";
             // 
             // btnMinimize
             // 
@@ -91,7 +99,7 @@
             this.rtbMessages.Margin = new System.Windows.Forms.Padding(0);
             this.rtbMessages.Name = "rtbMessages";
             this.rtbMessages.ReadOnly = true;
-            this.rtbMessages.Size = new System.Drawing.Size(140, 316);
+            this.rtbMessages.Size = new System.Drawing.Size(280, 316);
             this.rtbMessages.TabIndex = 9;
             this.rtbMessages.Text = "\nOlá";
             // 
@@ -116,31 +124,7 @@
             this.btnSend.Size = new System.Drawing.Size(37, 27);
             this.btnSend.TabIndex = 11;
             this.btnSend.UseVisualStyleBackColor = false;
-            // 
-            // lblPrivateChatName
-            // 
-            this.lblPrivateChatName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrivateChatName.Location = new System.Drawing.Point(12, 6);
-            this.lblPrivateChatName.Name = "lblPrivateChatName";
-            this.lblPrivateChatName.Size = new System.Drawing.Size(200, 23);
-            this.lblPrivateChatName.TabIndex = 2;
-            this.lblPrivateChatName.Text = "Nome do user";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(140, 38);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox1.Size = new System.Drawing.Size(140, 316);
-            this.richTextBox1.TabIndex = 12;
-            this.richTextBox1.Text = "Oi  a\n";
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // frmPrivateChat
             // 
@@ -149,7 +133,6 @@
             this.BackgroundImage = global::APS.ClientWindows.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(280, 408);
             this.ControlBox = false;
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.rtbMessages);
@@ -172,7 +155,6 @@
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Label lblPrivateChatName;
-        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
