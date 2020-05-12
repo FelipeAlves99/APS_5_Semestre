@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace APS.ClientCommand
 {
-    class Exceptions
+    public class ServerNotFoundException : Exception
     {
+        public ServerNotFoundException(string message): base(message) { }
     }
 }
