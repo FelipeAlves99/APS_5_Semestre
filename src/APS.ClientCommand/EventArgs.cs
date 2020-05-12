@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APS.ClientCommand
 {
-    public class Class1
+    class EventArgs
     {
     }
 }
