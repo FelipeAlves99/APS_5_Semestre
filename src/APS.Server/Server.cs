@@ -1,4 +1,7 @@
-﻿using System;
+﻿using APS.ServerCommand;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -6,157 +9,208 @@ using System.Threading;
 
 namespace APS.Server
 {
-    public class StateObject
-    {
-        // Client  socket.  
-        public Socket workSocket = null;
-        // Size of receive buffer.  
-        public const int BufferSize = 1024;
-        // Receive buffer.  
-        public byte[] buffer = new byte[BufferSize];
-        // Received data string.  
-        public StringBuilder sb = new StringBuilder();
-    }
-
     class Server
     {
+        private List<ClientManager> clients;
+        private BackgroundWorker bwListener;
+        private Socket listenerSocket;
+        private IPAddress serverIP;
+        private int serverPort;
+        
         static void Main(string[] args)
         {
-            StartListening();            
-        }
+            Server progDomain = new Server();
+            progDomain.clients = new List<ClientManager>();
 
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
-
-        public Server()
-        {
-        }
-
-        public static void StartListening()
-        {
-            // Establish the local endpoint for the socket.  
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 11000);
-
-            // Create a TCP/IP socket.  
-            Socket listener = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp);
-
-            // Bind the socket to the local endpoint and listen for incoming connections.  
-            try
+            if (args.Length == 0)
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
+                progDomain.serverPort = 8000;
+                progDomain.serverIP = IPAddress.Any;
+            }
+            if (args.Length == 1)
+            {
+                progDomain.serverIP = IPAddress.Parse(args[0]);
+                progDomain.serverPort = 8000;
+            }
+            if (args.Length == 2)
+            {
+                progDomain.serverIP = IPAddress.Parse(args[0]);
+                progDomain.serverPort = int.Parse(args[1]);
+            }
 
-                while (true)
+            progDomain.bwListener = new BackgroundWorker();
+            progDomain.bwListener.WorkerSupportsCancellation = true;
+            progDomain.bwListener.DoWork += new DoWorkEventHandler(progDomain.StartToListen);
+            progDomain.bwListener.RunWorkerAsync();
+
+            Console.WriteLine("*** Aplicação iniciada na porta {0}{1}{2}.Aperte ENTER para encerrar o server. ***\n", progDomain.serverIP.ToString(), ":", progDomain.serverPort.ToString());
+
+            Console.ReadLine();
+
+            progDomain.DisconnectServer();
+        }
+
+        private void StartToListen(object sender, DoWorkEventArgs e)
+        {
+            this.listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            this.listenerSocket.Bind(new IPEndPoint(this.serverIP, this.serverPort));
+            this.listenerSocket.Listen(200);
+            while (true)
+                this.CreateNewClientManager(this.listenerSocket.Accept());
+        }
+        private void CreateNewClientManager(Socket socket)
+        {
+            ClientManager newClientManager = new ClientManager(socket);
+            newClientManager.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
+            newClientManager.Disconnected += new DisconnectedEventHandler(ClientDisconnected);
+            this.CheckForAbnormalDC(newClientManager);
+            this.clients.Add(newClientManager);
+            this.UpdateConsole("Conectado.", newClientManager.IP, newClientManager.Port);
+        }
+
+        private void CheckForAbnormalDC(ClientManager mngr)
+        {
+            if (this.RemoveClientManager(mngr.IP))
+                this.UpdateConsole("Desconectado.", mngr.IP, mngr.Port);
+        }
+
+        void ClientDisconnected(object sender, ClientEventArgs e)
+        {
+            if (this.RemoveClientManager(e.IP))
+                this.UpdateConsole("Desconectado.", e.IP, e.Port);
+        }
+
+        private bool RemoveClientManager(IPAddress ip)
+        {
+            lock (this)
+            {
+                int index = this.IndexOfClient(ip);
+                if (index != -1)
                 {
-                    // Set the event to nonsignaled state.  
-                    allDone.Reset();
+                    string name = this.clients[index].ClientName;
+                    this.clients.RemoveAt(index);
 
-                    // Start an asynchronous socket to listen for connections.  
-                    Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(
-                        new AsyncCallback(AcceptCallback),
-                        listener);
-
-                    // Wait until a connection is made before continuing.  
-                    allDone.WaitOne();
+                    //Inform all clients that a client had been disconnected.
+                    Command cmd = new Command(CommandType.ClientLogOffInform, IPAddress.Broadcast);
+                    cmd.SenderName = name;
+                    cmd.SenderIP = ip;
+                    this.BroadCastCommand(cmd);
+                    return true;
                 }
-
+                return false;
             }
-            catch (Exception e)
+        }
+
+        private int IndexOfClient(IPAddress ip)
+        {
+            int index = -1;
+            foreach (ClientManager cMngr in this.clients)
             {
-                Console.WriteLine(e.ToString());
+                index++;
+                if (cMngr.IP.Equals(ip))
+                    return index;
+            }
+            return -1;
+        }
+
+        private void CommandReceived(object sender, CommandEventArgs e)
+        {
+            if (e.Command.CommandType == CommandType.ClientLoginInform)
+                this.SetManagerName(e.Command.SenderIP, e.Command.MetaData);
+
+            if (e.Command.CommandType == CommandType.IsNameExists)
+            {
+                bool isExixsts = this.IsNameExists(e.Command.SenderIP, e.Command.MetaData);
+                this.SendExistanceCommand(e.Command.SenderIP, isExixsts);
+                return;
             }
 
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
+            else if (e.Command.CommandType == CommandType.SendClientList)
+            {
+                this.SendClientListToNewClient(e.Command.SenderIP);
+                return;
+            }
+
+            if (e.Command.Target.Equals(IPAddress.Broadcast))
+                this.BroadCastCommand(e.Command);
+            else
+                this.SendCommandToTarget(e.Command);
 
         }
 
-        public static void AcceptCallback(IAsyncResult ar)
+        private void SendExistanceCommand(IPAddress targetIP, bool isExists)
         {
-            // Signal the main thread to continue.  
-            allDone.Set();
-
-            // Get the socket that handles the client request.  
-            Socket listener = (Socket)ar.AsyncState;
-            Socket handler = listener.EndAccept(ar);
-
-            Console.WriteLine("O cliente " + handler.RemoteEndPoint + " conectou.");            
-
-            // Create the state object.  
-            StateObject state = new StateObject();
-            state.workSocket = handler;
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                new AsyncCallback(ReadCallback), state);
+            Command cmdExistance = new Command(CommandType.IsNameExists, targetIP, isExists.ToString());
+            cmdExistance.SenderIP = this.serverIP;
+            cmdExistance.SenderName = "Server";
+            this.SendCommandToTarget(cmdExistance);
         }
 
-        public static void ReadCallback(IAsyncResult ar)
+        private void SendClientListToNewClient(IPAddress newClientIP)
         {
-            String content = String.Empty;
-
-            // Retrieve the state object and the handler socket  
-            // from the asynchronous state object.  
-            StateObject state = (StateObject)ar.AsyncState;
-            Socket handler = state.workSocket;
-
-            // Read data from the client socket.
-            int bytesRead = handler.EndReceive(ar);
-
-            if (bytesRead > 0)
+            foreach (ClientManager mngr in this.clients)
             {
-                // There  might be more data, so store the data received so far.  
-                state.sb.Append(Encoding.ASCII.GetString(
-                    state.buffer, 0, bytesRead));
-
-                // Check for end-of-file tag. If it is not there, read
-                // more data.  
-                content = state.sb.ToString();
-                if (content.IndexOf("<EOF>") > -1)
+                if (mngr.Connected && !mngr.IP.Equals(newClientIP))
                 {
-                    // All the data has been read from the
-                    // client. Display it on the console.  
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-                        content.Length, content);
-                    // Echo the data back to the client.  
-                    Send(handler, content);
+                    Command cmd = new Command(CommandType.SendClientList, newClientIP);
+                    cmd.MetaData = mngr.IP.ToString() + ":" + mngr.ClientName;
+                    cmd.SenderIP = this.serverIP;
+                    cmd.SenderName = "Server";
+                    this.SendCommandToTarget(cmd);
                 }
-                else
+            }
+        }
+
+        private string SetManagerName(IPAddress remoteClientIP, string nameString)
+        {
+            int index = this.IndexOfClient(remoteClientIP);
+            if (index != -1)
+            {
+                string name = nameString.Split(new char[] { ':' })[1];
+                this.clients[index].ClientName = name;
+                return name;
+            }
+            return "";
+        }
+        private bool IsNameExists(IPAddress remoteClientIP, string nameToFind)
+        {
+            foreach (ClientManager mngr in this.clients)
+                if (mngr.ClientName == nameToFind && !mngr.IP.Equals(remoteClientIP))
+                    return true;
+            return false;
+        }
+
+        private void BroadCastCommand(Command cmd)
+        {
+            foreach (ClientManager mngr in this.clients)
+                if (!mngr.IP.Equals(cmd.SenderIP))
+                    mngr.SendCommand(cmd);
+        }
+
+        private void SendCommandToTarget(Command cmd)
+        {
+            foreach (ClientManager mngr in this.clients)
+                if (mngr.IP.Equals(cmd.Target))
                 {
-                    // Not all data received. Get more.  
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
+                    mngr.SendCommand(cmd);
+                    return;
                 }
-            }
         }
-
-        private static void Send(Socket handler, String data)
+        private void UpdateConsole(string status, IPAddress IP, int port)
         {
-            // Convert the string data to byte data using ASCII encoding.  
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-            // Begin sending the data to the remote device.  
-            handler.BeginSend(byteData, 0, byteData.Length, 0,
-                new AsyncCallback(SendCallback), handler);
+            Console.WriteLine("Cliente {0}{1}{2} foi {3} ( {4}|{5} )", IP.ToString(), ":", port.ToString(), status, DateTime.Now.ToShortDateString(), DateTime.Now.ToLongTimeString());
         }
-
-        private static void SendCallback(IAsyncResult ar)
+        public void DisconnectServer()
         {
-            try
+            if (this.clients != null)
             {
-                // Retrieve the socket from the state object.  
-                Socket handler = (Socket)ar.AsyncState;
+                foreach (ClientManager mngr in this.clients)
+                    mngr.Disconnect();
 
-                // Complete sending the data to the remote device.  
-                int bytesSent = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
-
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
+                this.bwListener.CancelAsync();
+                this.bwListener.Dispose();
+                this.listenerSocket.Close();
+                GC.Collect();
             }
         }
     }
