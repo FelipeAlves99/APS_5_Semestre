@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 
 namespace APS.Server
 {
@@ -16,34 +14,21 @@ namespace APS.Server
         private Socket listenerSocket;
         private IPAddress serverIP;
         private int serverPort;
-        
+
         static void Main(string[] args)
         {
             Server progDomain = new Server();
             progDomain.clients = new List<ClientManager>();
 
-            if (args.Length == 0)
-            {
-                progDomain.serverPort = 8000;
-                progDomain.serverIP = IPAddress.Any;
-            }
-            if (args.Length == 1)
-            {
-                progDomain.serverIP = IPAddress.Parse(args[0]);
-                progDomain.serverPort = 8000;
-            }
-            if (args.Length == 2)
-            {
-                progDomain.serverIP = IPAddress.Parse(args[0]);
-                progDomain.serverPort = int.Parse(args[1]);
-            }
+            progDomain.serverPort = 10220;
+            progDomain.serverIP = IPAddress.Parse("0.0.0.0");
 
             progDomain.bwListener = new BackgroundWorker();
             progDomain.bwListener.WorkerSupportsCancellation = true;
             progDomain.bwListener.DoWork += new DoWorkEventHandler(progDomain.StartToListen);
             progDomain.bwListener.RunWorkerAsync();
 
-            Console.WriteLine("*** Aplicação iniciada na porta {0}{1}{2}.Aperte ENTER para encerrar o server. ***\n", progDomain.serverIP.ToString(), ":", progDomain.serverPort.ToString());
+            Console.WriteLine("*** Aplicação iniciada na porta {0}{1}{2}. Aperte ENTER para encerrar o server. ***\n", progDomain.serverIP.ToString(), ":", progDomain.serverPort.ToString());
 
             Console.ReadLine();
 

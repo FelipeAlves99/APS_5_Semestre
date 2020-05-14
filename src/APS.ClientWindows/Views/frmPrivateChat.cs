@@ -11,13 +11,10 @@ using System.Windows.Forms;
 namespace APS.ClientWindows
 {
     public partial class frmPrivateChat : Form
-    {
-        ClientManager _client;
-
-        public frmPrivateChat(ClientManager client)
+    {        
+        public frmPrivateChat()
         {
-            InitializeComponent();
-            _client = client;
+            InitializeComponent();            
         }
 
         private void btnSend_Click(object sender, EventArgs e)

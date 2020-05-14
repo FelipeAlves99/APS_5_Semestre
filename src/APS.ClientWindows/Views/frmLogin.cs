@@ -1,4 +1,5 @@
-﻿using System;
+﻿using APS.ClientCommand;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,11 +17,62 @@ namespace APS.ClientWindows.Views
 {
     public partial class frmLogin : Form
     {
-        private ClientManager _client;
+        private bool canClose;
+        private int serverPort = 10220;
+        private IPAddress serverIP = IPAddress.Parse("127.0.0.1");
+        private CMDClient client;
+        public CMDClient Client
+        {
+            get { return client; }
+        }
 
         public frmLogin()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            this.canClose = false;
+            Control.CheckForIllegalCrossThreadCalls = false;
+            this.client = new CMDClient(serverIP, serverPort, "None");
+            this.client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
+            this.client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
+            this.client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
+        }
+
+        private void client_ConnectingFailed(object sender, EventArgs e)
+            => MessageBox.Show("Falha ao conectar com o servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+        private void client_ConnectingSuccessed(object sender, EventArgs e)
+            => this.client.SendCommand(new Command(ClientCommand.CommandType.IsNameExists, this.client.IP, this.client.NetworkName));
+
+
+        void CommandReceived(object sender, CommandEventArgs e)
+        {
+            if (e.Command.CommandType == ClientCommand.CommandType.IsNameExists)
+            {
+                if (e.Command.MetaData.ToLower() == "true")
+                {
+                    MessageBox.Show("O nome de usuário já existe no servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.client.Disconnect();
+                }
+                else
+                {
+                    this.canClose = true;
+                    this.Close();
+                }
+            }
+        }
+
+        private bool LoginToServer()
+        {
+            if (this.txtUserName.Text.Trim() == "")
+                MessageBox.Show("Nome de usuário está vazio.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            else
+            {
+                this.client.NetworkName = this.txtUserName.Text.Trim();
+                this.client.ConnectToServer();
+                return true;
+            }
+            return false;
         }
 
         private void frmServerConfig_Load(object sender, EventArgs e)
@@ -30,9 +82,9 @@ namespace APS.ClientWindows.Views
 
             lblUserName.Font = new Font(font.Families[0], lblUserName.Font.Size, FontStyle.Regular);
             txtUserName.Font = new Font(font.Families[0], txtUserName.Font.Size, FontStyle.Regular);
-            lblHostname.Font = new Font(font.Families[0], lblHostname.Font.Size, FontStyle.Regular);
-            txtHostname.Font = new Font(font.Families[0], txtHostname.Font.Size, FontStyle.Regular);
             btnConnect.Font = new Font(font.Families[0], btnConnect.Font.Size, FontStyle.Regular);
+            btnClose.Font = new Font(font.Families[0], btnClose.Font.Size, FontStyle.Regular);
+            btnMinimize.Font = new Font(font.Families[0], btnMinimize.Font.Size, FontStyle.Regular);
             btnConnect.BackColor = Color.FromArgb(140, 223, 132);
         }
 
@@ -66,22 +118,23 @@ namespace APS.ClientWindows.Views
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            _client = new ClientManager(txtUserName.Text, txtHostname.Text);
-
-            try
+            var isConnected = LoginToServer();
+            if(isConnected)
             {
-                _client.ConnectToServer();
-                frmGroupChat groupChat = new frmGroupChat();
-                groupChat.Show();
+                frmGroupChat frmGroupChat = new frmGroupChat();
+                frmGroupChat.Show();
                 this.Hide();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
             }
         }
 
         #endregion
 
+        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!this.canClose)
+                e.Cancel = true;
+            else
+                this.client.CommandReceived -= new CommandReceivedEventHandler(CommandReceived);
+        }
     }
 }

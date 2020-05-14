@@ -36,17 +36,17 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(12, 441);
+            this.txtMessage.Location = new System.Drawing.Point(204, 441);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(438, 53);
+            this.txtMessage.Size = new System.Drawing.Size(301, 53);
             this.txtMessage.TabIndex = 0;
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(457, 441);
+            this.btnSend.Location = new System.Drawing.Point(511, 441);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(108, 53);
+            this.btnSend.Size = new System.Drawing.Size(54, 53);
             this.btnSend.TabIndex = 1;
             this.btnSend.Text = "Enviar";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -57,15 +57,15 @@
             this.lvUsersLoggedIn.HideSelection = false;
             this.lvUsersLoggedIn.Location = new System.Drawing.Point(12, 12);
             this.lvUsersLoggedIn.Name = "lvUsersLoggedIn";
-            this.lvUsersLoggedIn.Size = new System.Drawing.Size(121, 423);
+            this.lvUsersLoggedIn.Size = new System.Drawing.Size(186, 482);
             this.lvUsersLoggedIn.TabIndex = 2;
             this.lvUsersLoggedIn.UseCompatibleStateImageBehavior = false;
             // 
             // rtbMessages
             // 
-            this.rtbMessages.Location = new System.Drawing.Point(139, 12);
+            this.rtbMessages.Location = new System.Drawing.Point(204, 12);
             this.rtbMessages.Name = "rtbMessages";
-            this.rtbMessages.Size = new System.Drawing.Size(426, 423);
+            this.rtbMessages.Size = new System.Drawing.Size(361, 423);
             this.rtbMessages.TabIndex = 3;
             this.rtbMessages.Text = "";
             // 
