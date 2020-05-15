@@ -61,7 +61,7 @@ namespace APS.ClientWindows.Views
             }
         }
 
-        private bool LoginToServer()
+        private void LoginToServer()
         {
             if (this.txtUserName.Text.Trim() == "")
                 MessageBox.Show("Nome de usuário está vazio.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -69,10 +69,8 @@ namespace APS.ClientWindows.Views
             else
             {
                 this.client.NetworkName = this.txtUserName.Text.Trim();
-                this.client.ConnectToServer();
-                return true;
+                this.client.ConnectToServer();                
             }
-            return false;
         }
 
         private void frmServerConfig_Load(object sender, EventArgs e)
@@ -81,7 +79,14 @@ namespace APS.ClientWindows.Views
             font.AddFontFile("../../Resources/ubuntumono-r.ttf");
 
             lblUserName.Font = new Font(font.Families[0], lblUserName.Font.Size, FontStyle.Regular);
+            lblIp.Font = new Font(font.Families[0], lblIp.Font.Size, FontStyle.Regular);
+            lblPort.Font = new Font(font.Families[0], lblPort.Font.Size, FontStyle.Regular);
             txtUserName.Font = new Font(font.Families[0], txtUserName.Font.Size, FontStyle.Regular);
+            txtIp1.Font = new Font(font.Families[0], txtIp1.Font.Size, FontStyle.Regular);
+            txtIp2.Font = new Font(font.Families[0], txtIp2.Font.Size, FontStyle.Regular);
+            txtIp3.Font = new Font(font.Families[0], txtIp3.Font.Size, FontStyle.Regular);
+            txtIp4.Font = new Font(font.Families[0], txtIp4.Font.Size, FontStyle.Regular);
+            txtPort.Font = new Font(font.Families[0], txtPort.Font.Size, FontStyle.Regular);
             btnConnect.Font = new Font(font.Families[0], btnConnect.Font.Size, FontStyle.Regular);
             btnClose.Font = new Font(font.Families[0], btnClose.Font.Size, FontStyle.Regular);
             btnMinimize.Font = new Font(font.Families[0], btnMinimize.Font.Size, FontStyle.Regular);
@@ -118,23 +123,28 @@ namespace APS.ClientWindows.Views
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            var isConnected = LoginToServer();
-            if(isConnected)
-            {
-                frmGroupChat frmGroupChat = new frmGroupChat();
-                frmGroupChat.Show();
-                this.Hide();
-            }
+            LoginToServer();            
         }
 
         #endregion
 
-        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
+        #region Info button
+
+        private void btnInfo_Click(object sender, EventArgs e)
         {
-            if (!this.canClose)
-                e.Cancel = true;
-            else
-                this.client.CommandReceived -= new CommandReceivedEventHandler(CommandReceived);
+            MessageBox.Show($"Caso esteja acessando localmente, use a seguinte informação para Ip: 127.0.0.1." +
+                $"{Environment.NewLine}Caso esteja acessando remotamente, use o ip da máquina do servidor.",
+                "Informações de conexão",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
+
+        private void btnInfo_MouseEnter(object sender, EventArgs e)
+            => btnInfo.BackColor = Color.FromArgb(70, 113, 107);
+
+        private void btnInfo_MouseLeave(object sender, EventArgs e)
+            => btnInfo.BackColor = Color.FromArgb(64, 102, 97);
+
+        #endregion
     }
 }
