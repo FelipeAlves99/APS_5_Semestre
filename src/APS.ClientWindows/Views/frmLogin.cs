@@ -1,48 +1,27 @@
 ﻿using APS.ClientCommand;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace APS.ClientWindows.Views
 {
     public partial class frmLogin : Form
     {
-        private bool canClose;
-        private int serverPort = 10220;
-        private IPAddress serverIP = IPAddress.Parse("127.0.0.1");
-        private CMDClient client;
-        public CMDClient Client
-        {
-            get { return client; }
-        }
+        public CMDClient Client { get; private set; }
 
         public frmLogin()
         {
             InitializeComponent();
-            this.canClose = false;
             Control.CheckForIllegalCrossThreadCalls = false;
-            this.client = new CMDClient(serverIP, serverPort, "None");
-            this.client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
-            this.client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
-            this.client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
         }
 
         private void client_ConnectingFailed(object sender, EventArgs e)
             => MessageBox.Show("Falha ao conectar com o servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         private void client_ConnectingSuccessed(object sender, EventArgs e)
-            => this.client.SendCommand(new Command(ClientCommand.CommandType.IsNameExists, this.client.IP, this.client.NetworkName));
-
+            => this.Client.SendCommand(new Command(ClientCommand.CommandType.IsNameExists, this.Client.IP, this.Client.NetworkName));
 
         void CommandReceived(object sender, CommandEventArgs e)
         {
@@ -51,12 +30,7 @@ namespace APS.ClientWindows.Views
                 if (e.Command.MetaData.ToLower() == "true")
                 {
                     MessageBox.Show("O nome de usuário já existe no servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.client.Disconnect();
-                }
-                else
-                {
-                    this.canClose = true;
-                    this.Close();
+                    this.Client.Disconnect();
                 }
             }
         }
@@ -68,9 +42,35 @@ namespace APS.ClientWindows.Views
 
             else
             {
-                this.client.NetworkName = this.txtUserName.Text.Trim();
-                this.client.ConnectToServer();                
+                this.Client = new CMDClient(GetIPAddress(), GetPortNumber(), "None");
+                this.Client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
+                this.Client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
+                this.Client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
+
+                this.Client.NetworkName = this.txtUserName.Text.Trim();
+                this.Client.ConnectToServer();
+
+                OpenMainChat();
             }
+        }
+
+        private void OpenMainChat()
+        {
+            this.Hide();
+            frmGroupChat groupChat = new frmGroupChat();
+            groupChat.Show();
+        }
+
+        private int GetPortNumber()
+        {
+            int.TryParse(txtPort.Text, out int portNumber);
+            return portNumber;
+        }
+
+        private IPAddress GetIPAddress()
+        {
+            var stringIP = $"{txtIp1.Text}.{txtIp2.Text}.{txtIp3.Text}.{txtIp4.Text}";
+            return IPAddress.Parse(stringIP);
         }
 
         private void frmServerConfig_Load(object sender, EventArgs e)
@@ -122,9 +122,7 @@ namespace APS.ClientWindows.Views
         #region Connect button
 
         private void btnConnect_Click(object sender, EventArgs e)
-        {
-            LoginToServer();            
-        }
+            => LoginToServer();
 
         #endregion
 
