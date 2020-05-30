@@ -1,9 +1,8 @@
-﻿using System.Data;
-using System.Net;
+﻿using System.Net;
 
 namespace APS.ClientCommand
 {
-	public class Command
+    public class Command
 	{
 		private IPAddress senderIP;
 

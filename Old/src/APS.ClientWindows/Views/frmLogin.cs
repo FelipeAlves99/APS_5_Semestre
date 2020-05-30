@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace APS.ClientWindows.Views
@@ -14,9 +15,9 @@ namespace APS.ClientWindows.Views
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
         public frmLogin()
@@ -40,33 +41,32 @@ namespace APS.ClientWindows.Views
                     MessageBox.Show("O nome de usuário já existe no servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Client.Disconnect();
                 }
+                else
+                    Close();
             }
         }
 
         private void LoginToServer()
         {
-            if (this.txtUserName.Text.Trim() == "")
-                MessageBox.Show("Nome de usuário está vazio.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            else
+            try
             {
-                this.Client = new CMDClient(GetIPAddress(), GetPortNumber(), "None");
-                this.Client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
-                this.Client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
-                this.Client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
+                if (this.txtUserName.Text.Trim() == "")
+                    MessageBox.Show("Nome de usuário está vazio.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                this.Client.NetworkName = this.txtUserName.Text.Trim();
-                this.Client.ConnectToServer();
+                else
+                {
+                    this.Client = new CMDClient(GetIPAddress(), GetPortNumber(), "None");
+                    this.Client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
+                    this.Client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
+                    this.Client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
 
-                OpenMainChat();
+                    this.Client.NetworkName = this.txtUserName.Text.Trim();
+                    this.Client.ConnectToServer();
+                }
+            }catch(Exception e)
+            {
+                MessageBox.Show("Test");
             }
-        }
-
-        private void OpenMainChat()
-        {
-            this.Hide();
-            frmGroupChat groupChat = new frmGroupChat();
-            groupChat.Show();
         }
 
         private int GetPortNumber()
@@ -78,7 +78,8 @@ namespace APS.ClientWindows.Views
         private IPAddress GetIPAddress()
         {
             var stringIP = $"{txtIp1.Text}.{txtIp2.Text}.{txtIp3.Text}.{txtIp4.Text}";
-            return IPAddress.Parse(stringIP);
+            IPAddress.TryParse(stringIP, out IPAddress address);
+            return address;
         }
 
         private void frmServerConfig_Load(object sender, EventArgs e)
@@ -104,7 +105,7 @@ namespace APS.ClientWindows.Views
         #region Close button
 
         private void btnClose_Click(object sender, EventArgs e)
-            => Application.Exit();
+            => Close();
 
         private void btnClose_MouseEnter(object sender, EventArgs e)
             => btnClose.BackColor = Color.FromArgb(70, 113, 107);

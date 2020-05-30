@@ -21,7 +21,7 @@ namespace APS.Server
             progDomain.clients = new List<ClientManager>();
 
             progDomain.serverPort = 10220;
-            progDomain.serverIP = IPAddress.Parse("0.0.0.0");
+            progDomain.serverIP = IPAddress.Any;
 
             progDomain.bwListener = new BackgroundWorker();
             progDomain.bwListener.WorkerSupportsCancellation = true;
@@ -105,8 +105,8 @@ namespace APS.Server
 
             if (e.Command.CommandType == CommandType.IsNameExists)
             {
-                bool isExixsts = this.IsNameExists(e.Command.SenderIP, e.Command.MetaData);
-                this.SendExistanceCommand(e.Command.SenderIP, isExixsts);
+                bool isExists = this.IsNameExists(e.Command.SenderIP, e.Command.MetaData);
+                this.SendExistanceCommand(e.Command.SenderIP, isExists);
                 return;
             }
 
