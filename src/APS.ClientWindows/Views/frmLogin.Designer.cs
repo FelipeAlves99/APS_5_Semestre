@@ -33,19 +33,19 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblUserName = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlControlBox = new System.Windows.Forms.Panel();
+            this.btnInfo = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblIp = new System.Windows.Forms.Label();
             this.lblPort = new System.Windows.Forms.Label();
             this.txtPort = new System.Windows.Forms.TextBox();
-            this.btnInfo = new System.Windows.Forms.Button();
             this.txtIp1 = new System.Windows.Forms.TextBox();
             this.txtIp2 = new System.Windows.Forms.TextBox();
             this.txtIp3 = new System.Windows.Forms.TextBox();
             this.txtIp4 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.pnlControlBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConnect
@@ -95,17 +95,36 @@
             this.txtUserName.Size = new System.Drawing.Size(222, 22);
             this.txtUserName.TabIndex = 6;
             // 
-            // panel1
+            // pnlControlBox
             // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.btnInfo);
-            this.panel1.Controls.Add(this.btnMinimize);
-            this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(271, 35);
-            this.panel1.TabIndex = 7;
+            this.pnlControlBox.BackColor = System.Drawing.Color.Transparent;
+            this.pnlControlBox.Controls.Add(this.btnInfo);
+            this.pnlControlBox.Controls.Add(this.btnMinimize);
+            this.pnlControlBox.Controls.Add(this.btnClose);
+            this.pnlControlBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlControlBox.Location = new System.Drawing.Point(0, 0);
+            this.pnlControlBox.Name = "pnlControlBox";
+            this.pnlControlBox.Size = new System.Drawing.Size(271, 35);
+            this.pnlControlBox.TabIndex = 7;
+            this.pnlControlBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlControlBox_MouseDown);
+            // 
+            // btnInfo
+            // 
+            this.btnInfo.BackColor = System.Drawing.Color.Transparent;
+            this.btnInfo.BackgroundImage = global::APS.ClientWindows.Properties.Resources._interface;
+            this.btnInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnInfo.FlatAppearance.BorderSize = 0;
+            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInfo.Location = new System.Drawing.Point(4, 5);
+            this.btnInfo.Margin = new System.Windows.Forms.Padding(0);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(30, 30);
+            this.btnInfo.TabIndex = 13;
+            this.btnInfo.Text = "I";
+            this.btnInfo.UseVisualStyleBackColor = false;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            this.btnInfo.MouseEnter += new System.EventHandler(this.btnInfo_MouseEnter);
+            this.btnInfo.MouseLeave += new System.EventHandler(this.btnInfo_MouseLeave);
             // 
             // btnMinimize
             // 
@@ -176,24 +195,6 @@
             this.txtPort.TabIndex = 5;
             this.txtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // btnInfo
-            // 
-            this.btnInfo.BackColor = System.Drawing.Color.Transparent;
-            this.btnInfo.BackgroundImage = global::APS.ClientWindows.Properties.Resources._interface;
-            this.btnInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnInfo.FlatAppearance.BorderSize = 0;
-            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInfo.Location = new System.Drawing.Point(5, 2);
-            this.btnInfo.Margin = new System.Windows.Forms.Padding(0);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(30, 30);
-            this.btnInfo.TabIndex = 13;
-            this.btnInfo.Text = "I";
-            this.btnInfo.UseVisualStyleBackColor = false;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
-            this.btnInfo.MouseEnter += new System.EventHandler(this.btnInfo_MouseEnter);
-            this.btnInfo.MouseLeave += new System.EventHandler(this.btnInfo_MouseLeave);
-            // 
             // txtIp1
             // 
             this.txtIp1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -245,7 +246,7 @@
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.lblPort);
             this.Controls.Add(this.lblIp);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlControlBox);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.txtUserName);
             this.Controls.Add(this.btnConnect);
@@ -257,7 +258,7 @@
             this.Text = "frmServerConfig";
             this.Load += new System.EventHandler(this.frmServerConfig_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.pnlControlBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,7 +269,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.TextBox txtUserName;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlControlBox;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.Label lblIp;
