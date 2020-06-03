@@ -59,7 +59,6 @@ namespace APS.ClientWindows
         private void btnSend_Click(object sender, EventArgs e)
             => SendMessage();
 
-
         private void SendMessage()
         {
             if (remoteClient.Connected && txtNewMessage.Text.Trim() != "")
@@ -74,14 +73,11 @@ namespace APS.ClientWindows
         private void frmPrivate_FormClosing(object sender, FormClosingEventArgs e)
             => remoteClient.CommandReceived -= new CommandReceivedEventHandler(private_CommandReceived);
 
-
         private void frmPrivate_Activated(object sender, EventArgs e)
             => activated = true;
 
-
         private void frmPrivate_Deactivate(object sender, EventArgs e)
             => activated = false;
-
 
         #region Close button
 
