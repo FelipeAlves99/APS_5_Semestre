@@ -1,7 +1,6 @@
 ﻿using APS.ClientCommand;
 using System;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -30,16 +29,16 @@ namespace APS.ClientWindows.Views
             => MessageBox.Show("Falha ao conectar com o servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         private void client_ConnectingSuccessed(object sender, EventArgs e)
-            => this.Client.SendCommand(new Command(ClientCommand.CommandType.IsNameExists, this.Client.IP, this.Client.NetworkName));
+            => Client.SendCommand(new Command(CommandType.IsNameExists, Client.IP, Client.NetworkName));
 
         void CommandReceived(object sender, CommandEventArgs e)
         {
-            if (e.Command.CommandType == ClientCommand.CommandType.IsNameExists)
+            if (e.Command.CommandType == CommandType.IsNameExists)
             {
                 if (e.Command.MetaData.ToLower() == "true")
                 {
                     MessageBox.Show("O nome de usuário já existe no servidor.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Client.Disconnect();
+                    Client.Disconnect();
                 }
                 else
                     Close();
@@ -48,24 +47,18 @@ namespace APS.ClientWindows.Views
 
         private void LoginToServer()
         {
-            try
-            {
-                if (this.txtUserName.Text.Trim() == "")
-                    MessageBox.Show("Nome de usuário está vazio.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (txtUserName.Text.Trim() == "")
+                MessageBox.Show("Nome de usuário está vazio.", "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                else
-                {
-                    this.Client = new CMDClient(GetIPAddress(), GetPortNumber(), "None");
-                    this.Client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
-                    this.Client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
-                    this.Client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
-
-                    this.Client.NetworkName = this.txtUserName.Text.Trim();
-                    this.Client.ConnectToServer();
-                }
-            }catch(Exception e)
+            else
             {
-                MessageBox.Show("Test");
+                Client = new CMDClient(GetIPAddress(), GetPortNumber(), "None");
+                Client.CommandReceived += new CommandReceivedEventHandler(CommandReceived);
+                Client.ConnectingSuccessed += new ConnectingSuccessedEventHandler(client_ConnectingSuccessed);
+                Client.ConnectingFailed += new ConnectingFailedEventHandler(client_ConnectingFailed);
+
+                Client.NetworkName = txtUserName.Text.Trim();
+                Client.ConnectToServer();
             }
         }
 
@@ -82,25 +75,11 @@ namespace APS.ClientWindows.Views
             return address;
         }
 
-        private void frmServerConfig_Load(object sender, EventArgs e)
-        {
-            PrivateFontCollection font = new PrivateFontCollection();
-            font.AddFontFile("../../Resources/ubuntumono-r.ttf");
+        private void frmLogin_Load(object sender, EventArgs e)
+            => btnConnect.BackColor = Color.FromArgb(140, 223, 132);
 
-            lblUserName.Font = new Font(font.Families[0], lblUserName.Font.Size, FontStyle.Regular);
-            lblIp.Font = new Font(font.Families[0], lblIp.Font.Size, FontStyle.Regular);
-            lblPort.Font = new Font(font.Families[0], lblPort.Font.Size, FontStyle.Regular);
-            txtUserName.Font = new Font(font.Families[0], txtUserName.Font.Size, FontStyle.Regular);
-            txtIp1.Font = new Font(font.Families[0], txtIp1.Font.Size, FontStyle.Regular);
-            txtIp2.Font = new Font(font.Families[0], txtIp2.Font.Size, FontStyle.Regular);
-            txtIp3.Font = new Font(font.Families[0], txtIp3.Font.Size, FontStyle.Regular);
-            txtIp4.Font = new Font(font.Families[0], txtIp4.Font.Size, FontStyle.Regular);
-            txtPort.Font = new Font(font.Families[0], txtPort.Font.Size, FontStyle.Regular);
-            btnConnect.Font = new Font(font.Families[0], btnConnect.Font.Size, FontStyle.Regular);
-            btnClose.Font = new Font(font.Families[0], btnClose.Font.Size, FontStyle.Regular);
-            btnMinimize.Font = new Font(font.Families[0], btnMinimize.Font.Size, FontStyle.Regular);
-            btnConnect.BackColor = Color.FromArgb(140, 223, 132);
-        }
+        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
+            => Client.CommandReceived -= new CommandReceivedEventHandler(CommandReceived);
 
         #region Close button
 
@@ -118,7 +97,7 @@ namespace APS.ClientWindows.Views
         #region Minimize button
 
         private void btnMinimize_Click(object sender, EventArgs e)
-            => this.WindowState = FormWindowState.Minimized;
+            => WindowState = FormWindowState.Minimized;
 
         private void btnMinimize_MouseEnter(object sender, EventArgs e)
             => btnMinimize.BackColor = Color.FromArgb(70, 113, 107);
@@ -165,6 +144,8 @@ namespace APS.ClientWindows.Views
             }
         }
 
+
         #endregion
+
     }
 }
