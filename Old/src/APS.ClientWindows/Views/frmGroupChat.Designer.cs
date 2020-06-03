@@ -28,37 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("");
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGroupChat));
-            this.txtMessage = new System.Windows.Forms.TextBox();
+            this.txtNewMessage = new System.Windows.Forms.TextBox();
             this.pnlControlBox = new System.Windows.Forms.Panel();
-            this.btnLogoff = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
-            this.btnPrivateChat = new System.Windows.Forms.Button();
-            this.rtbMessages = new System.Windows.Forms.RichTextBox();
-            this.lvUsersLoggedIn = new System.Windows.Forms.ListView();
+            this.btnPrivate = new System.Windows.Forms.Button();
+            this.txtMessages = new System.Windows.Forms.RichTextBox();
+            this.lstViwUsers = new System.Windows.Forms.ListView();
+            this.colIcon = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.pnlControlBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // txtMessage
+            // txtNewMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(163, 458);
-            this.txtMessage.Multiline = true;
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(218, 36);
-            this.txtMessage.TabIndex = 0;
+            this.txtNewMessage.Location = new System.Drawing.Point(163, 458);
+            this.txtNewMessage.Multiline = true;
+            this.txtNewMessage.Name = "txtNewMessage";
+            this.txtNewMessage.Size = new System.Drawing.Size(218, 36);
+            this.txtNewMessage.TabIndex = 0;
             // 
             // pnlControlBox
             // 
             this.pnlControlBox.BackColor = System.Drawing.Color.Transparent;
-            this.pnlControlBox.Controls.Add(this.btnLogoff);
+            this.pnlControlBox.Controls.Add(this.btnLogin);
             this.pnlControlBox.Controls.Add(this.pictureBox1);
             this.pnlControlBox.Controls.Add(this.btnMinimize);
             this.pnlControlBox.Controls.Add(this.btnClose);
@@ -69,21 +69,21 @@
             this.pnlControlBox.TabIndex = 8;
             this.pnlControlBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlControlBox_MouseDown);
             // 
-            // btnLogoff
+            // btnLogin
             // 
-            this.btnLogoff.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogoff.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnLogoff.FlatAppearance.BorderSize = 0;
-            this.btnLogoff.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogoff.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogoff.Location = new System.Drawing.Point(38, 0);
-            this.btnLogoff.Margin = new System.Windows.Forms.Padding(0);
-            this.btnLogoff.Name = "btnLogoff";
-            this.btnLogoff.Size = new System.Drawing.Size(95, 30);
-            this.btnLogoff.TabIndex = 10;
-            this.btnLogoff.Text = "Login";
-            this.btnLogoff.UseVisualStyleBackColor = true;
-            this.btnLogoff.Click += new System.EventHandler(this.btnLogoff_Click);
+            this.btnLogin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLogin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnLogin.FlatAppearance.BorderSize = 0;
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogin.Location = new System.Drawing.Point(38, 0);
+            this.btnLogin.Margin = new System.Windows.Forms.Padding(0);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(95, 30);
+            this.btnLogin.TabIndex = 10;
+            this.btnLogin.Text = "Login";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogoff_Click);
             // 
             // pictureBox1
             // 
@@ -145,53 +145,68 @@
             this.btnSend.Size = new System.Drawing.Size(48, 36);
             this.btnSend.TabIndex = 12;
             this.btnSend.UseVisualStyleBackColor = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // btnPrivateChat
+            // btnPrivate
             // 
-            this.btnPrivateChat.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPrivateChat.FlatAppearance.BorderSize = 0;
-            this.btnPrivateChat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPrivateChat.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrivateChat.Location = new System.Drawing.Point(12, 458);
-            this.btnPrivateChat.Margin = new System.Windows.Forms.Padding(0);
-            this.btnPrivateChat.Name = "btnPrivateChat";
-            this.btnPrivateChat.Size = new System.Drawing.Size(145, 36);
-            this.btnPrivateChat.TabIndex = 11;
-            this.btnPrivateChat.Text = "Chat privado";
-            this.btnPrivateChat.UseVisualStyleBackColor = true;
-            this.btnPrivateChat.Click += new System.EventHandler(this.btnPrivate_Click);
+            this.btnPrivate.BackColor = System.Drawing.Color.Transparent;
+            this.btnPrivate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPrivate.FlatAppearance.BorderSize = 0;
+            this.btnPrivate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrivate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrivate.Location = new System.Drawing.Point(12, 458);
+            this.btnPrivate.Margin = new System.Windows.Forms.Padding(0);
+            this.btnPrivate.Name = "btnPrivate";
+            this.btnPrivate.Size = new System.Drawing.Size(145, 36);
+            this.btnPrivate.TabIndex = 11;
+            this.btnPrivate.Text = "Chat privado";
+            this.btnPrivate.UseVisualStyleBackColor = false;
+            this.btnPrivate.Click += new System.EventHandler(this.btnPrivate_Click);
             // 
-            // rtbMessages
+            // txtMessages
             // 
-            this.rtbMessages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rtbMessages.Location = new System.Drawing.Point(163, 48);
-            this.rtbMessages.Name = "rtbMessages";
-            this.rtbMessages.ReadOnly = true;
-            this.rtbMessages.Size = new System.Drawing.Size(272, 404);
-            this.rtbMessages.TabIndex = 3;
-            this.rtbMessages.Text = "";
+            this.txtMessages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMessages.Location = new System.Drawing.Point(163, 48);
+            this.txtMessages.Name = "txtMessages";
+            this.txtMessages.ReadOnly = true;
+            this.txtMessages.Size = new System.Drawing.Size(272, 404);
+            this.txtMessages.TabIndex = 3;
+            this.txtMessages.Text = "";
             // 
-            // lvUsersLoggedIn
+            // lstViwUsers
             // 
-            this.lvUsersLoggedIn.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lvUsersLoggedIn.Alignment = System.Windows.Forms.ListViewAlignment.Default;
-            this.lvUsersLoggedIn.FullRowSelect = true;
-            this.lvUsersLoggedIn.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lvUsersLoggedIn.HideSelection = false;
-            this.lvUsersLoggedIn.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4});
-            this.lvUsersLoggedIn.LabelWrap = false;
-            this.lvUsersLoggedIn.Location = new System.Drawing.Point(12, 48);
-            this.lvUsersLoggedIn.MultiSelect = false;
-            this.lvUsersLoggedIn.Name = "lvUsersLoggedIn";
-            this.lvUsersLoggedIn.RightToLeftLayout = true;
-            this.lvUsersLoggedIn.Size = new System.Drawing.Size(145, 404);
-            this.lvUsersLoggedIn.TabIndex = 2;
-            this.lvUsersLoggedIn.UseCompatibleStateImageBehavior = false;
-            this.lvUsersLoggedIn.View = System.Windows.Forms.View.Details;
+            this.lstViwUsers.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.lstViwUsers.Alignment = System.Windows.Forms.ListViewAlignment.Default;
+            this.lstViwUsers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colIcon,
+            this.colUserName});
+            this.lstViwUsers.FullRowSelect = true;
+            this.lstViwUsers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lstViwUsers.HideSelection = false;
+            this.lstViwUsers.LabelWrap = false;
+            this.lstViwUsers.Location = new System.Drawing.Point(12, 48);
+            this.lstViwUsers.MultiSelect = false;
+            this.lstViwUsers.Name = "lstViwUsers";
+            this.lstViwUsers.RightToLeftLayout = true;
+            this.lstViwUsers.Size = new System.Drawing.Size(145, 404);
+            this.lstViwUsers.SmallImageList = this.imgList;
+            this.lstViwUsers.TabIndex = 2;
+            this.lstViwUsers.UseCompatibleStateImageBehavior = false;
+            this.lstViwUsers.View = System.Windows.Forms.View.Details;
+            // 
+            // colIcon
+            // 
+            this.colIcon.Width = 23;
+            // 
+            // colUserName
+            // 
+            this.colUserName.Width = 85;
+            // 
+            // imgList
+            // 
+            this.imgList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgList.ImageStream")));
+            this.imgList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgList.Images.SetKeyName(0, "Smiely.png");
             // 
             // frmGroupChat
             // 
@@ -200,12 +215,12 @@
             this.BackgroundImage = global::APS.ClientWindows.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(449, 506);
             this.ControlBox = false;
-            this.Controls.Add(this.btnPrivateChat);
+            this.Controls.Add(this.btnPrivate);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.pnlControlBox);
-            this.Controls.Add(this.rtbMessages);
-            this.Controls.Add(this.lvUsersLoggedIn);
-            this.Controls.Add(this.txtMessage);
+            this.Controls.Add(this.txtMessages);
+            this.Controls.Add(this.lstViwUsers);
+            this.Controls.Add(this.txtNewMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -222,15 +237,18 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtMessage;
+        private System.Windows.Forms.TextBox txtNewMessage;
         private System.Windows.Forms.Panel pnlControlBox;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnLogoff;
+        private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.Button btnPrivateChat;
-        private System.Windows.Forms.RichTextBox rtbMessages;
-        private System.Windows.Forms.ListView lvUsersLoggedIn;
+        private System.Windows.Forms.Button btnPrivate;
+        private System.Windows.Forms.RichTextBox txtMessages;
+        private System.Windows.Forms.ListView lstViwUsers;
+        private System.Windows.Forms.ColumnHeader colIcon;
+        private System.Windows.Forms.ColumnHeader colUserName;
+        private System.Windows.Forms.ImageList imgList;
     }
 }
