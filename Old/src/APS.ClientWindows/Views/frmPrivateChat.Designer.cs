@@ -126,6 +126,7 @@
             // 
             this.txtMessages.Location = new System.Drawing.Point(11, 44);
             this.txtMessages.Name = "txtMessages";
+            this.txtMessages.ReadOnly = true;
             this.txtMessages.Size = new System.Drawing.Size(259, 195);
             this.txtMessages.TabIndex = 12;
             this.txtMessages.Text = "";
@@ -148,6 +149,7 @@
             this.Activated += new System.EventHandler(this.frmPrivate_Activated);
             this.Deactivate += new System.EventHandler(this.frmPrivate_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPrivate_FormClosing);
+            this.Load += new System.EventHandler(this.frmPrivateChat_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

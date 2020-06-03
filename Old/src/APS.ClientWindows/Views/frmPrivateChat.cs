@@ -79,6 +79,9 @@ namespace APS.ClientWindows
         private void frmPrivate_Deactivate(object sender, EventArgs e)
             => activated = false;
 
+        private void frmPrivateChat_Load(object sender, EventArgs e)
+            => lblPrivateChatName.BackColor = Color.FromArgb(140, 223, 132);
+
         #region Close button
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -117,5 +120,6 @@ namespace APS.ClientWindows
         }
 
         #endregion
+
     }
 }
