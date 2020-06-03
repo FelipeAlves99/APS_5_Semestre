@@ -32,9 +32,9 @@
             this.lblPrivateChatName = new System.Windows.Forms.Label();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.txtMessage = new System.Windows.Forms.TextBox();
+            this.txtNewMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
-            this.rtbMessages = new System.Windows.Forms.RichTextBox();
+            this.txtMessages = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(280, 35);
             this.panel1.TabIndex = 8;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlControlBox_MouseDown);
             // 
             // lblPrivateChatName
             // 
@@ -58,6 +59,7 @@
             this.lblPrivateChatName.Size = new System.Drawing.Size(200, 23);
             this.lblPrivateChatName.TabIndex = 2;
             this.lblPrivateChatName.Text = "Nome do usuário";
+            this.lblPrivateChatName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlControlBox_MouseDown);
             // 
             // btnMinimize
             // 
@@ -89,14 +91,14 @@
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
-            // txtMessage
+            // txtNewMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(9, 255);
-            this.txtMessage.Margin = new System.Windows.Forms.Padding(0);
-            this.txtMessage.Multiline = true;
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(212, 34);
-            this.txtMessage.TabIndex = 10;
+            this.txtNewMessage.Location = new System.Drawing.Point(11, 255);
+            this.txtNewMessage.Margin = new System.Windows.Forms.Padding(0);
+            this.txtNewMessage.Multiline = true;
+            this.txtNewMessage.Name = "txtNewMessage";
+            this.txtNewMessage.Size = new System.Drawing.Size(210, 34);
+            this.txtNewMessage.TabIndex = 1;
             // 
             // btnSend
             // 
@@ -112,16 +114,13 @@
             this.btnSend.UseVisualStyleBackColor = false;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // rtbMessages
+            // txtMessages
             // 
-            this.rtbMessages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbMessages.Location = new System.Drawing.Point(7, 44);
-            this.rtbMessages.Name = "rtbMessages";
-            this.rtbMessages.Size = new System.Drawing.Size(259, 195);
-            this.rtbMessages.TabIndex = 12;
-            this.rtbMessages.Text = "";
+            this.txtMessages.Location = new System.Drawing.Point(11, 44);
+            this.txtMessages.Name = "txtMessages";
+            this.txtMessages.Size = new System.Drawing.Size(259, 195);
+            this.txtMessages.TabIndex = 12;
+            this.txtMessages.Text = "";
             // 
             // frmPrivateChat
             // 
@@ -130,13 +129,16 @@
             this.BackgroundImage = global::APS.ClientWindows.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(280, 302);
             this.ControlBox = false;
-            this.Controls.Add(this.rtbMessages);
+            this.Controls.Add(this.txtMessages);
             this.Controls.Add(this.btnSend);
-            this.Controls.Add(this.txtMessage);
+            this.Controls.Add(this.txtNewMessage);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmPrivateChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Activated += new System.EventHandler(this.frmPrivate_Activated);
+            this.Deactivate += new System.EventHandler(this.frmPrivate_Deactivate);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPrivate_FormClosing);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -148,10 +150,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.TextBox txtMessage;
+        private System.Windows.Forms.TextBox txtNewMessage;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Label lblPrivateChatName;
-        private System.Windows.Forms.RichTextBox rtbMessages;
+        private System.Windows.Forms.RichTextBox txtMessages;
     }
 }
 
